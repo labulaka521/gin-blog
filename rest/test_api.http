@@ -5,7 +5,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 ###
-POST http://127.0.0.1:8000/api/v1/tags?neeeame=1&state=111&created_by=test
+POST http://127.0.0.1:8000/api/v1/tags?name=1&state=111&created_by=test
 Accept: application/json
 
 ###
@@ -33,13 +33,13 @@ GET http://127.0.0.1:8000/api/v1/articles?state=1&token=eyJhbGciOiJIUzI1NiIsInR5
 GET http://127.0.0.1:8000/api/v1/articles/1?token=1234
 
 ###
-POST http://127.0.0.1:8000/api/v1/articles?tag_id=2&title=test11&desc=test-desc&content=test-content&created_by=test-created&state=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InRlc3QiLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJleHAiOjE1NTA4MzM3MjYsImlzcyI6Imdpbi1ibG9nIn0.p_RBh5aLgdEaqFf6N-p7JTBfU6a-bIozgFyGPO9__9c
+POST http://127.0.0.1:8000/api/v1/articles?tag_id=2&title=test11&desc=test-de``sc&content=test-content&created_by=test-created&state=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InRlc3QiLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJleHAiOjE1NTA4MzM3MjYsImlzcyI6Imdpbi1ibG9nIn0.p_RBh5aLgdEaqFf6N-p7JTBfU6a-bIozgFyGPO9__9c
 
 
 ###
 DELETE http://127.0.0.1:8000/api/v1/articles/1
 
 ###
-GET http://127.0.0.1:8000/auth?username=test&password=test123456
+GET http://127.0.0.1:8000/auth?username=test&password=test11
 
 ###

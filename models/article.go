@@ -1,7 +1,5 @@
 package models
 
-import "log"
-
 type Article struct {
 	Model
 
@@ -28,7 +26,7 @@ type Article struct {
 
 func ExistArticleByID(id int) bool {
 	var article Article
-	db.Select("id").Where("id = ?", id).First(&article)
+	db.Select("id").Where("id = ? AND deleted_on = ?", id, 0).First(&article)
 
 	if article.ID > 0 {
 		return true
@@ -55,7 +53,7 @@ func GetArticle(id int) (article Article) {
 }
 
 func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
+	db.Model(&Article{}).Where("id = ? ", id).Updates(data)
 	return true
 }
 
@@ -77,6 +75,6 @@ func DeleteArticle(id int) bool {
 }
 
 func CleanAllArticle() bool {
-	log.Println("clean all article")
+	db.Unscoped().Where("deleted_on != ?", 0).Delete(&Article{})
 	return true
 }

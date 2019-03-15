@@ -6,51 +6,91 @@ import (
 	"time"
 )
 
-var (
-	Cfg *ini.File
-
-	RunMode string
-
-	HttpPort     int
-	ReadTimeOut  time.Duration
-	WriteTimeOut time.Duration
-
+// 定义与配置文件中app相同的配置的结构体
+type App struct {
 	PageSize  int
 	JwtSecret string
-)
 
-func init() {
-	var err error
-	Cfg, err = ini.Load("conf/app.ini")
+	RuntimeRootPath string
+
+	ImagePrefixUrl string
+	ImageSavePath  string
+	ImageMaxSize   int
+	ImageAllowExts []string
+
+	LogSavePath string
+	LogSavename string
+	LogFileExt  string
+	TimeFormat  string
+}
+
+var AppSetting = &App{}
+
+type Server struct {
+	RunMode      string
+	HttpPort     int
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+}
+
+var ServerSetting = &Server{}
+
+type Database struct {
+	Type        string
+	User        string
+	Password    string
+	Host        string
+	Name        string
+	TablePrefix string
+}
+
+var DatabaseSetting = &Database{}
+
+type Redis struct {
+	Host        string
+	Password    string
+	MaxIdle     int
+	MaxActive   int
+	IdleTimeOut time.Duration
+}
+
+var RedisSetting = &Redis{}
+
+func Setup() {
+	Cfg, err := ini.Load("conf/app.ini")
 	if err != nil {
-		log.Fatal(2, "Fail to parse 'conf/app.ini: %v", err)
+		log.Fatalf("Fail to parse 'conf/app.ini': %v", err)
 	}
-	LoadBase()
-	LoadServer()
-	loadApp()
-}
 
-func LoadBase() {
-	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
-}
-
-func LoadServer() {
-	sec, err := Cfg.GetSection("server")
+	// 映射结构体
+	err = Cfg.Section("app").MapTo(AppSetting)
 	if err != nil {
-		log.Fatal(2, "fail to get section 'server':%v", err)
+		log.Fatalf("Cfg.Mapto AppSetting err: %v", err)
 	}
-	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
-	HttpPort = sec.Key("HTTP_PORT").MustInt(8080)
-	ReadTimeOut = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
-	WriteTimeOut = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
-}
 
-func loadApp() {
-	sec, err := Cfg.GetSection("app")
+	AppSetting.ImageMaxSize = AppSetting.ImageMaxSize * 1024 * 1024
+
+	err = Cfg.Section("server").MapTo(ServerSetting)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Cfg.MapTo ServerSetting err: %v", err)
 	}
 
-	JwtSecret = sec.Key("JWT__SECRET").MustString("!@)*#)!@U#@*!@!)")
-	PageSize = sec.Key("PAGE_SIZE").MustInt(10)
+	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
+	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
+
+	err = Cfg.Section("database").MapTo(DatabaseSetting)
+	if err != nil {
+		log.Fatalf("Cfg.MapTo Database err: %v", err)
+	}
+
+	err = Cfg.Section("redis").MapTo(RedisSetting)
+
+	if err != nil {
+		log.Fatalf("Cfg.MapTo Redis err: %v", err)
+	}
+	RedisSetting.IdleTimeOut = RedisSetting.IdleTimeOut * time.Second
 }
+
+//编写与配置项保持一致的结构体(APP SERVER Database)
+// 使用MapTo将配置项映射到结构体上
+// 对一些需特殊设置的配置项进行再赋值

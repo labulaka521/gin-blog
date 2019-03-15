@@ -8,8 +8,7 @@ import (
 func main() {
 
 	ticker := time.NewTicker(time.Second * 2)
-	for i := range ticker.C {
-		_ = i
+	for _ := range ticker.C {
 		models.CleanAllTag()
 		models.CleanAllArticle()
 	}

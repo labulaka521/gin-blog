@@ -146,9 +146,9 @@ var doc = `{
 		},
 		"/auth": {
 			"get": {
-				"produces": {
-					"application/json"
-				},
+				"produces": [
+                    "application/json"
+                ],
 				"summary": "Get Request Token",
 				"parameters": [
 					{

@@ -5,7 +5,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 ###
-POST http://127.0.0.1:8000/api/v1/tags?name=1&state=111&created_by=test
+POST http://127.0.0.1:8000/api/v1/tags?name=tag1&state=1&created_by=wang
 Accept: application/json
 
 ###
@@ -13,33 +13,32 @@ GET http://127.0.0.1:8000/api/v1/tags
 Accept: application/json
 
 ###
-GET http://sams.yidian-inc.com/api/v1/infomation/rq_status
+PUT http://127.0.0.1:8000/api/v1/tags/4?name=edit1&state=0&modified_by=edit1
 Accept: application/json
 
 ###
-PUT http://127.0.0.1:8000/api/v1/tags/1?name=edit1&state=0&modified_by=edit1
-Accept: application/json
-
-###
-DELETE http://127.0.0.1:8000/api/v1/tags/1
+DELETE http://127.0.0.1:8000/api/v1/tags/5
 Accept: application/json
 
 ### ARTICLE
 
 ###
-GET http://127.0.0.1:8000/api/v1/articles?state=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InRlc3QiLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJleHAiOjE1NTA4MzM3MjYsImlzcyI6Imdpbi1ibG9nIn0.p_RBh5aLgdEaqFf6N-p7JTBfU6a-bIozgFyGPO9__9c
-
+GET http://127.0.0.1:8000/api/v1/articles?state=1
 ###
-GET http://127.0.0.1:8000/api/v1/articles/1?token=1234
-
+GET http://127.0.0.1:8000/api/v1/articles/6
 ###
-POST http://127.0.0.1:8000/api/v1/articles?tag_id=2&title=test11&desc=test-de``sc&content=test-content&created_by=test-created&state=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InRlc3QiLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJleHAiOjE1NTA4MzM3MjYsImlzcyI6Imdpbi1ibG9nIn0.p_RBh5aLgdEaqFf6N-p7JTBfU6a-bIozgFyGPO9__9c
-
-
+POST http://127.0.0.1:8000/api/v1/articles?tag_id=6&title=test11&desc=test-desc&content=test-content&created_by=test-created&state=1&cover_image_url=http://127.0.0.1:8000/upload/images/0a694d35f2c3266af09daa1e36ed91bc.png
 ###
-DELETE http://127.0.0.1:8000/api/v1/articles/1
+DELETE http://127.0.0.1:8000/api/v1/articles/5
 
 ###
 GET http://127.0.0.1:8000/auth?username=test&password=test11
 
 ###
+POST http://127.0.0.1:8000/upload
+Accept: multipart/form-data
+
+
+
+###
+

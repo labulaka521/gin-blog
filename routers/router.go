@@ -1,10 +1,11 @@
 package routers
 
 import (
-	"gin-blog/middleware"
+	"gin-blog/pkg/upload"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"net/http"
 
 	_ "gin-blog/docs"
 	"gin-blog/pkg/setting"
@@ -17,17 +18,27 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Logger(), gin.Recovery()) // 绑定日志和恢复中间件
 
-	gin.SetMode(setting.RunMode)
+	gin.SetMode(setting.ServerSetting.RunMode)
 
 	//r.GET("/test", func(c *gin.Context) {
 	//	c.JSON(200, gin.H{
 	//		"message": "test",
 	//	})
 	//})
+
+	// http.StringPrefix主要是从请求的URL的路径中删除给定的前缀，最终返回一个Handler
+	// 通常 http.FileServer 要与 http.StripPrefix 相结合使用，否则当你运行：
+	//
+	//http.Handle("/upload/images", http.FileServer(http.Dir("upload/images")))
+	//会无法正确的访问到文件目录，因为 /upload/images 也包含在了 URL 路径中，必须使用：
+	//http.Handle("/upload/images", http.StripPrefix("upload/images", http.FileServer(http.Dir("upload/images"))))
+	r.StaticFS("upload/images", http.Dir(upload.GetImageFullPath()))
 	r.GET("/auth", api.GetAuth)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.POST("/upload", api.UploadImage)
+
 	apiv1 := r.Group("/api/v1/")
-	apiv1.Use(middleware.JWT())
+	//apiv1.Use(middleware.JWT())
 	{
 		//获取标签列表
 		apiv1.GET("/tags", v1.GetTags)

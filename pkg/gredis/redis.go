@@ -9,7 +9,7 @@ import (
 
 var RedisConn *redis.Pool
 
-func Setup() error {
+func Setup() {
 	RedisConn = &redis.Pool{
 		MaxIdle:   setting.RedisSetting.MaxIdle,
 		MaxActive: setting.RedisSetting.MaxActive,
@@ -23,7 +23,7 @@ func Setup() error {
 			}
 			if setting.RedisSetting.Password != "" {
 				if _, err := c.Do("AUTH", setting.RedisSetting.Password); err != nil {
-					c.Close()
+					_ = c.Close()
 					return nil, err
 				}
 			}
@@ -35,21 +35,27 @@ func Setup() error {
 			return err
 		},
 	}
-	return nil
 }
 
-func Set(key string, data interface{}, time int) (bool, error) {
+func Set(key string, data interface{}, time int) error {
 	conn := RedisConn.Get() // 获取一个活跃的连接
 	defer conn.Close()
 
 	value, err := json.Marshal(data)
 	if err != nil {
-		return false, err
+		return err
 	}
-	reply, err := redis.Bool(conn.Do("SET", key, value))
-	conn.Do("EXPIRE", key, time)
 
-	return reply, err
+	_, err = conn.Do("SET", key, value)
+	if err != nil {
+		return err
+	}
+
+	_, err = conn.Do("EXPIRE", key, time)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func Exists(key string) bool {

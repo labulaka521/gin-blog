@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"fmt"
 	"github.com/go-ini/ini"
 	"log"
 	"time"
@@ -89,6 +90,7 @@ func Setup() {
 		log.Fatalf("Cfg.MapTo Redis err: %v", err)
 	}
 	RedisSetting.IdleTimeOut = RedisSetting.IdleTimeOut * time.Second
+	fmt.Println(RedisSetting)
 }
 
 //编写与配置项保持一致的结构体(APP SERVER Database)

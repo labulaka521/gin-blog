@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-blog/models"
+	"gin-blog/pkg/gredis"
 	"gin-blog/pkg/logging"
 	"gin-blog/pkg/setting"
 	"gin-blog/routers"
@@ -14,7 +15,7 @@ func init() {
 	setting.Setup()
 	models.Setup()
 	logging.Setup()
-
+	gredis.Setup()
 }
 
 func main() {

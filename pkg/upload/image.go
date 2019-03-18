@@ -62,7 +62,7 @@ func CheckImageSize(f multipart.File) bool {
 	return size <= setting.AppSetting.ImageMaxSize
 }
 
-// 检查图片
+// 检查图片保存的路径是否可写 是否存在路径 将文件写入的权限
 func CheckImage(src string) error {
 	dir, err := os.Getwd()
 	if err != nil {

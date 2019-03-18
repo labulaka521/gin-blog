@@ -5,7 +5,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 ###
-POST http://127.0.0.1:8000/api/v1/tags?name=tag1&state=1&created_by=wang
+POST http://127.0.0.1:8000/api/v1/tags?name=tag1&state=1&created_by=wnajk
 Accept: application/json
 
 ###
@@ -13,11 +13,11 @@ GET http://127.0.0.1:8000/api/v1/tags
 Accept: application/json
 
 ###
-PUT http://127.0.0.1:8000/api/v1/tags/4?name=edit1&state=0&modified_by=edit1
+PUT http://127.0.0.1:8000/api/v1/tags/7?name=edit1&state=0&modified_by=edit1
 Accept: application/json
 
 ###
-DELETE http://127.0.0.1:8000/api/v1/tags/5
+DELETE http://127.0.0.1:8000/api/v1/tags/7
 Accept: application/json
 
 ### ARTICLE
@@ -25,11 +25,11 @@ Accept: application/json
 ###
 GET http://127.0.0.1:8000/api/v1/articles?state=1
 ###
-GET http://127.0.0.1:8000/api/v1/articles/6
+GET http://127.0.0.1:8000/api/v1/articles/8
 ###
-POST http://127.0.0.1:8000/api/v1/articles?tag_id=6&title=test11&desc=test-desc&content=test-content&created_by=test-created&state=1&cover_image_url=http://127.0.0.1:8000/upload/images/0a694d35f2c3266af09daa1e36ed91bc.png
+PUT http://127.0.0.1:8000/api/v1/articles/8?tag_id=8&modified_by=change&title=test1111&desc=test-111desc&content=test-content111&created_by=test-created&state=1&cover_image_url=http://127.0.0.1:8000/upload/images/0a694d35f2c3266af09daa1e36ed91bc.png
 ###
-DELETE http://127.0.0.1:8000/api/v1/articles/5
+DELETE http://127.0.0.1:8000/api/v1/articles/8
 
 ###
 GET http://127.0.0.1:8000/auth?username=test&password=test11
@@ -37,8 +37,3 @@ GET http://127.0.0.1:8000/auth?username=test&password=test11
 ###
 POST http://127.0.0.1:8000/upload
 Accept: multipart/form-data
-
-
-
-###
-
